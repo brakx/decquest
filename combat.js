@@ -49,7 +49,19 @@ class CombatEngine{
     this.addLog(`Response rejected: unsupported effect ${s.effect}.`);
     this.notify();
   }
-  declineResponse(){if(this.state==="RESPONSE")this.resolveEnemyAction()}
+  declineResponse(){
+    this.addLog("No Response selected.");
+    if(this.state!=="RESPONSE"||!this.responseAction){
+      this.addLog("No Response ignored: no active response window.");
+      this.notify();
+      return;
+    }
+    const action=this.responseAction;
+    this.state="ENEMY_TURN";
+    this.addLog(`${action.enemy.name}'s ${action.name} will resolve.`);
+    this.notify();
+    setTimeout(()=>this.resolveEnemyAction(),250);
+  }
   resolveEnemyAction(){const a=this.responseAction;if(a&&a.enemy.alive&&a.target.alive){a.target.hp=Math.max(0,a.target.hp-a.damage);this.addLog(`${a.enemy.name} uses ${a.name} on ${a.target.name} for ${a.damage}.`);if(a.target.hp<=0){a.target.alive=false;this.addLog(`${a.target.name} falls.`)}}this.responseAction=null;this.notify();if(!this.checkEnd())setTimeout(()=>this.advance(),250)}
   advance(){if(this.checkEnd())return;this.turnIndex++;this.state="TURN_START";this.beginTurn()}
   checkEnd(){if(!this.living("enemy").length){this.state="VICTORY";this.heroes.forEach(h=>{h.alive=true;h.hp=h.maxHp;h.tapped=false});this.addLog("Victory. Heroes return at full health.");this.notify();return true}if(!this.living("hero").length){this.state="DEFEAT";this.addLog("Party defeated.");this.notify();return true}return false}

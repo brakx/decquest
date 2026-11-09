@@ -1,1 +1,0 @@
-<DekQuestSave version="0.6"><Note>Import and export are not active yet.</Note></DekQuestSave>

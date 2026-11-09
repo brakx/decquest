@@ -1,16 +1,12 @@
-# DekQuest Alpha 0.8
+# DekQuest Alpha 0.8.1 Response Fix
 
-Adds the progression system to the adventure loop:
+Fixes instant-response buttons that appeared but did not execute reliably.
 
-- XP requirement is hero level x 3
-- Heroes who qualify level after combat
-- Level-up presents a random three-card pack
-- Choose one creature, equipment, or aura
-- Power, toughness, colors, creature types, and keywords accumulate
-- Choose one of three name stickers after each level
-- Even-numbered levels add prefixes; odd-numbered levels add suffixes
-- Multiple heroes can level after one encounter
-- Room progression resumes after all level-ups finish
-- Debug bar remains enabled for testing
-
-Steve begins at 2/3 XP so the first kill should trigger a level-up quickly.
+Changes:
+- Response buttons now use a delegated event handler instead of inline JavaScript.
+- The selected response button immediately displays `Resolving response...`.
+- Response validation writes detailed results to the combat log.
+- Shock now clearly reports whether it defeated the acting enemy or whether the enemy action continues.
+- Counterspell now logs successful cancellation and then advances combat.
+- Added cache-busting version 0.8.1 to all web assets.
+- Debug bar remains enabled.

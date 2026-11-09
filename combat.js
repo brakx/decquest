@@ -12,7 +12,43 @@ class CombatEngine{
   pass(){if(this.state!=="PLAYER_TURN")return;this.addLog(`${this.current().name} passes.`);this.advance()}
   prepareEnemyAction(e){const targets=this.living("hero"),weighted=[];targets.forEach(h=>{for(let i=0;i<(h.tapped?1:3);i++)weighted.push(h)});const t=weighted[Math.floor(Math.random()*weighted.length)],isSpell=e.spell&&Math.random()<.45;this.responseAction={enemy:e,target:t,type:isSpell?"spell":"attack",name:isSpell?e.spell.name:"Attack",damage:isSpell?e.spell.amount:e.power};if(this.availableResponses(this.responseAction).length){this.state="RESPONSE";this.notify()}else this.resolveEnemyAction()}
   availableResponses(a){const out=[];this.heroes.forEach(h=>{if(!h.alive||h.tapped)return;h.spells.forEach(s=>{if(h.mana<s.cost||s.speed!=="Instant")return;if(s.effect==="counter"&&a.type==="spell")out.push({hero:h,spell:s});if(s.effect==="damage")out.push({hero:h,spell:s})})});return out}
-  useResponse(hid,sid){const h=this.getUnit(hid),s=h.spells.find(x=>x.id===sid);if(this.state!=="RESPONSE"||h.tapped||h.mana<s.cost)return;h.mana-=s.cost;h.tapped=true;if(s.effect==="counter"){this.addLog(`${h.name} counters ${this.responseAction.name}.`);this.responseAction=null;this.advance();return}this.damage(h,this.responseAction.enemy,s.amount);if(!this.responseAction.enemy.alive){this.responseAction=null;if(!this.checkEnd())this.advance();return}this.resolveEnemyAction()}
+  useResponse(hid,sid){
+    this.addLog(`Response selected: hero=${hid}, spell=${sid}.`);
+    if(this.state!=="RESPONSE"||!this.responseAction){this.addLog("Response rejected: no active response window.");this.notify();return}
+    const h=this.getUnit(hid);
+    if(!h){this.addLog("Response rejected: hero was not found.");this.notify();return}
+    const s=(h.spells||[]).find(x=>x.id===sid);
+    if(!s){this.addLog("Response rejected: spell was not found.");this.notify();return}
+    if(!h.alive||h.tapped||h.mana<s.cost){this.addLog(`Response rejected: ${h.name} cannot cast ${s.name}.`);this.notify();return}
+    const action=this.responseAction;
+    h.mana-=s.cost;
+    h.tapped=true;
+    if(s.effect==="counter"){
+      this.addLog(`${h.name} casts ${s.name} and counters ${action.name}.`);
+      this.responseAction=null;
+      this.notify();
+      setTimeout(()=>this.advance(),250);
+      return;
+    }
+    if(s.effect==="damage"){
+      this.addLog(`${h.name} casts ${s.name} in response.`);
+      this.damage(h,action.enemy,s.amount);
+      if(!action.enemy.alive){
+        this.addLog(`${action.name} does not resolve because ${action.enemy.name} was defeated.`);
+        this.responseAction=null;
+        this.notify();
+        if(!this.checkEnd())setTimeout(()=>this.advance(),250);
+        return;
+      }
+      this.addLog(`${action.enemy.name} survives the response; ${action.name} will resolve.`);
+      this.responseAction=action;
+      this.notify();
+      setTimeout(()=>this.resolveEnemyAction(),250);
+      return;
+    }
+    this.addLog(`Response rejected: unsupported effect ${s.effect}.`);
+    this.notify();
+  }
   declineResponse(){if(this.state==="RESPONSE")this.resolveEnemyAction()}
   resolveEnemyAction(){const a=this.responseAction;if(a&&a.enemy.alive&&a.target.alive){a.target.hp=Math.max(0,a.target.hp-a.damage);this.addLog(`${a.enemy.name} uses ${a.name} on ${a.target.name} for ${a.damage}.`);if(a.target.hp<=0){a.target.alive=false;this.addLog(`${a.target.name} falls.`)}}this.responseAction=null;this.notify();if(!this.checkEnd())setTimeout(()=>this.advance(),250)}
   advance(){if(this.checkEnd())return;this.turnIndex++;this.state="TURN_START";this.beginTurn()}

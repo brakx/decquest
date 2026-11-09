@@ -1,11 +1,10 @@
-# DekQuest Alpha 0.8.2 No Response Fix
+# DekQuest Alpha 0.8.3 Response Rewrite
 
-Fixes the response window freezing when **No Response** is selected.
+The instant-response flow was rewritten instead of patched again.
 
-Changes:
-- No Response now uses the same delegated event system as spell responses.
-- The button immediately changes to `Resolving enemy action...`.
-- Combat state changes from `RESPONSE` to `ENEMY_TURN` before resolution.
-- The pending enemy action is preserved and resolves after a short delay.
-- The combat log records selection and resolution details.
-- Cache-busting updated to version 0.8.2.
+- Response buttons call explicit global wrapper functions.
+- Removed delegated response-button handling.
+- Counterspell, Shock, and No Response each have a dedicated state transition.
+- Exception handling returns errors to the combat log instead of leaving a disabled button onscreen.
+- Enemy action and turn advancement are separated so they cannot both run simultaneously.
+- Cache-busting updated to 0.8.3.

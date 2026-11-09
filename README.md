@@ -1,12 +1,16 @@
-# DekQuest Alpha 0.7
+# DekQuest Alpha 0.8
 
-- Four adventure rooms per chapter
-- Hidden creature-type themes in rooms 1 and 3
-- Visible set portal choices in rooms 2 and 4
-- Save point before the boss
-- Boss retry checkpoint
-- XML save export
-- Boss victory advances to the next chapter
-- Retains mana, tapping, spells, abilities, and instant responses
+Adds the progression system to the adventure loop:
 
-Upload these files directly to the repository root. No renaming is required.
+- XP requirement is hero level x 3
+- Heroes who qualify level after combat
+- Level-up presents a random three-card pack
+- Choose one creature, equipment, or aura
+- Power, toughness, colors, creature types, and keywords accumulate
+- Choose one of three name stickers after each level
+- Even-numbered levels add prefixes; odd-numbered levels add suffixes
+- Multiple heroes can level after one encounter
+- Room progression resumes after all level-ups finish
+- Debug bar remains enabled for testing
+
+Steve begins at 2/3 XP so the first kill should trigger a level-up quickly.

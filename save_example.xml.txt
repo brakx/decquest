@@ -1,1 +1,1 @@
-<DekQuestSave version="0.7"><Chapter>1</Chapter><Room>5</Room></DekQuestSave>
+<DekQuestSave version="0.8"><Chapter>1</Chapter><Room>1</Room></DekQuestSave>

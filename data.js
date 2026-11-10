@@ -8,3 +8,14 @@ const DQ={
  themes:[['Goblins','Smoke drifts through a canyon.',['Goblin Scout','Goblin Piker','Goblin Shaman']],['Elves','Ancient trees close around the path.',['Elvish Mystic','Elven Archer','Elvish Warrior']],['Zombies','Loose soil shifts beneath old graves.',['Walking Corpse','Diregraf Ghoul','Ghoulcaller']]],
  portals:[['Kamigawa: Neon Dynasty','A neon city glitters beyond the rift.'],['Fallout','A toxic wasteland stretches past faded signs.'],['Bloomburrow','Tiny villages wind through towering flowers.'],['Innistrad','A moonlit village waits beneath crooked spires.']]
 };
+DQ.starters=[
+ {name:'Savannah Lions',power:2,maxHp:1,colors:['White'],types:['Cat'],keywords:[]},
+ {name:'Storm Crow',power:1,maxHp:2,colors:['Blue'],types:['Bird'],keywords:['Flying']},
+ {name:'Goblin Piker',power:2,maxHp:1,colors:['Red'],types:['Goblin','Warrior'],keywords:[]},
+ {name:'Llanowar Elves',power:1,maxHp:1,colors:['Green'],types:['Elf','Druid'],keywords:[],ability:'Mana Dork'},
+ {name:'Typhoid Rats',power:1,maxHp:1,colors:['Black'],types:['Rat'],keywords:['Deathtouch']},
+ {name:'Silvercoat Lion',power:2,maxHp:2,colors:['White'],types:['Cat'],keywords:[]},
+ {name:'Wind Drake',power:2,maxHp:2,colors:['Blue'],types:['Drake'],keywords:['Flying']},
+ {name:'Hill Giant',power:3,maxHp:3,colors:['Red'],types:['Giant'],keywords:[]},
+ {name:'Runeclaw Bear',power:2,maxHp:2,colors:['Green'],types:['Bear'],keywords:[]}
+];

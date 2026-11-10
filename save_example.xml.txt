@@ -1,1 +1,1 @@
-<DekQuestSave version="0.10"><Chapter>1</Chapter><Room>1</Room><Hero name="Steve" power="2" health="4" xp="0"/></DekQuestSave>
+<DekQuestSave version="0.11"><Chapter>1</Chapter><Room>1</Room></DekQuestSave>

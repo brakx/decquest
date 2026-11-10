@@ -1,8 +1,12 @@
-# DekQuest Alpha 0.10
+# DekQuest Alpha 0.11
 
-- Browser autosave and Continue
-- XML save export/import
-- Options for confirmations
-- Default, high-contrast, and colorblind-friendly themes
-- Custom hero, enemy, and active-turn colors
-- Version 0.10 shown in browser title, page title, debug bar, README, save format, and cache keys
+- New ASCII-art welcome screen
+- Removed action confirmation options
+- All attacks, spells, and abilities choose Party or Enemies before choosing a target
+- Reanimate can target defeated heroes or enemies
+- Reanimated enemies become tapped temporary party allies for the current room
+- Temporary allies join initiative and keep their stats and abilities
+- Kills by temporary allies award XP to their controller
+- Temporary allies are removed after the room, retries, saves, and autosave loading
+- Accessibility themes and custom colors remain
+- Version 0.11 appears in browser title, visible title, debug bar, README, autosave key, and cache keys

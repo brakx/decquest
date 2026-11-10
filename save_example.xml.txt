@@ -1,1 +1,1 @@
-<DekQuestSave version="0.8"><Chapter>1</Chapter><Room>1</Room></DekQuestSave>
+<DekQuestSave version="0.9"><Chapter>1</Chapter><Room>1</Room><Autosave>Browser localStorage</Autosave></DekQuestSave>

@@ -32,3 +32,16 @@ const DQ={
   {name:'Test Angel',power:4,hp:4,mv:4,colors:['White'],keywords:['Flying','Vigilance']}
  ]
 };
+DQ.rewards=[
+ {name:'Wind Drake',kind:'Creature',power:2,hp:2,colors:['Blue'],types:['Drake'],keywords:['Flying']},
+ {name:'Deadly Recluse',kind:'Creature',power:1,hp:2,colors:['Green'],types:['Spider'],keywords:['Reach','Deathtouch']},
+ {name:'Swiftblade',kind:'Creature',power:1,hp:2,colors:['White','Red'],types:['Soldier'],keywords:['Double Strike']},
+ {name:'Serra Angel',kind:'Creature',power:4,hp:4,colors:['White'],types:['Angel'],keywords:['Flying','Vigilance']},
+ {name:'Shadowspear',kind:'Equipment',power:1,hp:1,colors:['Colorless'],types:[],keywords:['Trample','Lifelink']},
+ {name:'Swiftfoot Boots',kind:'Equipment',power:0,hp:0,colors:['Colorless'],types:[],keywords:['Haste','Hexproof']},
+ {name:'Darksteel Plate',kind:'Equipment',power:0,hp:1,colors:['Colorless'],types:[],keywords:['Indestructible']},
+ {name:'Rancor',kind:'Aura',power:2,hp:0,colors:['Green'],types:[],keywords:['Trample']}
+];
+DQ.prefixes=['Caffeinated','Mindless','Daft','Questionably Legal','Overclocked','Slightly Moist'];
+DQ.suffixes=['the Swift','of Mild Concern','from Accounting','the Adequate','of Regret','the Unlicensed'];
+DQ.portals=[['Kamigawa: Neon Dynasty','A neon city glitters beyond the rift.'],['Fallout','A toxic wasteland stretches past faded signs.'],['Bloomburrow','Tiny villages wind through towering flowers.'],['Innistrad','A moonlit village waits beneath crooked spires.']];

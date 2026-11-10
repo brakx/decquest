@@ -45,3 +45,9 @@ DQ.rewards=[
 DQ.prefixes=['Caffeinated','Mindless','Daft','Questionably Legal','Overclocked','Slightly Moist'];
 DQ.suffixes=['the Swift','of Mild Concern','from Accounting','the Adequate','of Regret','the Unlicensed'];
 DQ.portals=[['Kamigawa: Neon Dynasty','A neon city glitters beyond the rift.'],['Fallout','A toxic wasteland stretches past faded signs.'],['Bloomburrow','Tiny villages wind through towering flowers.'],['Innistrad','A moonlit village waits beneath crooked spires.']];
+DQ.cardPools={
+ Standard:{description:'A smaller modern-style pool with straightforward creatures and evergreen mechanics.',allowed:['Savannah Lions','Storm Crow','Goblin Piker','Llanowar Elves','Typhoid Rats','Runeclaw Bear']},
+ Pauper:{description:'Commons-focused gameplay with efficient creatures, fewer bombs, and tighter resource decisions.',allowed:['Storm Crow','Goblin Piker','Llanowar Elves','Typhoid Rats','Runeclaw Bear']},
+ Legacy:{description:'A broad, high-powered pool with old and new mechanics available together.',allowed:null},
+ Vintage:{description:'The broadest experimental pool with the strongest test cards and combinations.',allowed:null}
+};

@@ -1,17 +1,15 @@
-# DekQuest Alpha 0.14
+# DekQuest Alpha 0.15
 
-Integrated playable loop:
-- Welcome screen
-- Tutorial prompt and six-step guided tutorial
-- Difficulty selection
-- Four-hero Standard or Keyword Test draft
-- Six-stage chapter: combat, portal, combat, portal, save, boss
-- Mana-value encounter budgets with developer controls
-- Corrected keyword combat engine
-- XP, level-up packs, and stickers
-- Autosave after drafting, portals, room victories, save rooms, and progression
-- Temporary allies excluded from persistence
-- Version 0.14 in browser title, visible title, debug interface, README, save schema, autosave key, and cache keys
+- Card-pool selection: Standard, Pauper, Legacy, and Vintage
+- Short description for each card pool
+- Card-pool setting included in autosave and XML save
+- Save Room exports a complete XML save
+- Main menu imports XML saves and previews them before continuing
+- Imported saves restore difficulty, chapter, room, balance settings, and permanent heroes
+- Boss-only exile ability with a visible warning
+- Exile bypasses Indestructible and lasts for the room
+- Exiled permanent heroes return after the room; temporary allies do not persist
+- Corrected Indestructible behavior: damage is marked, but lethal damage and Deathtouch do not destroy it
+- Version 0.15 in browser title, visible title, debug interface, README, XML schema, autosave key, and cache keys
 
-Planned for 0.15: card-pool selection such as Standard, Pauper, Legacy, and Vintage.
-Planned for 0.16: begin Scryfall data integration.
+Planned for 0.16: initial Scryfall-backed card data.

@@ -1,1 +1,1 @@
-<DekQuestSave version="0.15.1"><CardPool>Standard</CardPool><Room>1</Room></DekQuestSave>
+<DekQuestSave version="0.15.2"><CardPool>Standard</CardPool><Room>1</Room></DekQuestSave>

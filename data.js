@@ -1,53 +1,10 @@
 const DQ={
- standard:[
-  {name:'Savannah Lions',power:2,hp:1,mv:1,colors:['White'],types:['Cat'],keywords:[]},
-  {name:'Storm Crow',power:1,hp:2,mv:2,colors:['Blue'],types:['Bird'],keywords:['Flying']},
-  {name:'Goblin Piker',power:2,hp:1,mv:2,colors:['Red'],types:['Goblin','Warrior'],keywords:[]},
-  {name:'Llanowar Elves',power:1,hp:1,mv:1,colors:['Green'],types:['Elf','Druid'],keywords:[],ability:'Mana Dork'},
-  {name:'Typhoid Rats',power:1,hp:1,mv:1,colors:['Black'],types:['Rat'],keywords:['Deathtouch']},
-  {name:'Runeclaw Bear',power:2,hp:2,mv:2,colors:['Green'],types:['Bear'],keywords:[]}
- ],
  keyword:[
-  {name:'Sky Tester',power:2,hp:2,mv:2,colors:['Blue'],types:['Bird'],keywords:['Flying']},
-  {name:'Tower Tester',power:2,hp:3,mv:3,colors:['Green'],types:['Archer'],keywords:['Reach']},
-  {name:'Twinblade Tester',power:2,hp:2,mv:3,colors:['White'],types:['Knight'],keywords:['Double Strike']},
-  {name:'Watchful Tester',power:2,hp:3,mv:3,colors:['White'],types:['Soldier'],keywords:['Vigilance']},
-  {name:'Swift Tester',power:2,hp:2,mv:2,colors:['Red'],types:['Warrior'],keywords:['Haste']},
-  {name:'Venom Tester',power:1,hp:1,mv:1,colors:['Black'],types:['Snake'],keywords:['Deathtouch']},
-  {name:'Blood Tester',power:2,hp:2,mv:2,colors:['Black'],types:['Vampire'],keywords:['Lifelink']},
-  {name:'Hidden Tester',power:2,hp:2,mv:2,colors:['Blue'],types:['Rogue'],keywords:['Hexproof']},
-  {name:'Immortal Tester',power:2,hp:2,mv:3,colors:['Colorless'],types:['Construct'],keywords:['Indestructible']},
-  {name:'Protected Tester',power:2,hp:2,mv:2,colors:['White'],types:['Cleric'],keywords:['Protection from Red']},
-  {name:'Crushing Tester',power:4,hp:2,mv:4,colors:['Green'],types:['Beast'],keywords:['Trample']},
-  {name:'Venomous Charger',power:5,hp:3,mv:5,colors:['Black','Green'],types:['Beast'],keywords:['Deathtouch','Trample']},
-  {name:'Sunblade Tester',power:2,hp:3,mv:4,colors:['White'],types:['Knight'],keywords:['Double Strike','Lifelink']},
-  {name:'Skyguard Tester',power:2,hp:3,mv:4,colors:['White','Blue'],types:['Bird','Soldier'],keywords:['Flying','Vigilance']}
+  ['Sky Tester',2,2,2,['Blue'],['Flying']],['Tower Tester',2,3,3,['Green'],['Reach']],['Twinblade Tester',2,2,3,['White'],['Double Strike']],['Watchful Tester',2,3,3,['White'],['Vigilance']],['Swift Tester',2,2,2,['Red'],['Haste']],['Venom Tester',1,1,1,['Black'],['Deathtouch']],['Blood Tester',2,4,2,['Black'],['Lifelink']],['Hidden Tester',2,2,2,['Blue'],['Hexproof']],['Immortal Tester',2,2,3,['Colorless'],['Indestructible']],['Protected Tester',2,2,2,['White'],['Protection from Red']],['Crushing Tester',4,2,4,['Green'],['Trample']],['Venomous Charger',5,3,5,['Black','Green'],['Deathtouch','Trample']],['Sunblade Tester',2,4,4,['White'],['Double Strike','Lifelink']]
  ],
- enemyPool:[
-  {name:'Test Rat',power:1,hp:1,mv:1,colors:['Black'],keywords:['Deathtouch']},
-  {name:'Test Goblin',power:1,hp:2,mv:1,colors:['Red'],keywords:[]},
-  {name:'Test Drake',power:2,hp:2,mv:2,colors:['Blue'],keywords:['Flying']},
-  {name:'Test Archer',power:2,hp:3,mv:3,colors:['Green'],keywords:['Reach']},
-  {name:'Test Knight',power:3,hp:3,mv:3,colors:['White'],keywords:['Vigilance']},
-  {name:'Test Angel',power:4,hp:4,mv:4,colors:['White'],keywords:['Flying','Vigilance']}
- ]
+ enemies:[
+  ['Red Goblin',1,2,1,['Red'],[]],['Flying Drake',2,2,2,['Blue'],['Flying']],['Reach Archer',2,3,3,['Green'],['Reach']],['Indestructible Idol',2,2,3,['Colorless'],['Indestructible']],['Protected Cleric',2,2,2,['White'],['Protection from Red']],['Venom Rat',1,1,1,['Black'],['Deathtouch']],['Large Beast',3,5,4,['Green'],[]]
+ ],
+ pools:{Standard:'Modern-style test pool with evergreen mechanics.',Pauper:'Commons-focused test pool and lower-complexity cards.',Legacy:'Broad high-power pool with old and new mechanics.',Vintage:'Broadest experimental pool with the strongest combinations.'}
 };
-DQ.rewards=[
- {name:'Wind Drake',kind:'Creature',power:2,hp:2,colors:['Blue'],types:['Drake'],keywords:['Flying']},
- {name:'Deadly Recluse',kind:'Creature',power:1,hp:2,colors:['Green'],types:['Spider'],keywords:['Reach','Deathtouch']},
- {name:'Swiftblade',kind:'Creature',power:1,hp:2,colors:['White','Red'],types:['Soldier'],keywords:['Double Strike']},
- {name:'Serra Angel',kind:'Creature',power:4,hp:4,colors:['White'],types:['Angel'],keywords:['Flying','Vigilance']},
- {name:'Shadowspear',kind:'Equipment',power:1,hp:1,colors:['Colorless'],types:[],keywords:['Trample','Lifelink']},
- {name:'Swiftfoot Boots',kind:'Equipment',power:0,hp:0,colors:['Colorless'],types:[],keywords:['Haste','Hexproof']},
- {name:'Darksteel Plate',kind:'Equipment',power:0,hp:1,colors:['Colorless'],types:[],keywords:['Indestructible']},
- {name:'Rancor',kind:'Aura',power:2,hp:0,colors:['Green'],types:[],keywords:['Trample']}
-];
-DQ.prefixes=['Caffeinated','Mindless','Daft','Questionably Legal','Overclocked','Slightly Moist'];
-DQ.suffixes=['the Swift','of Mild Concern','from Accounting','the Adequate','of Regret','the Unlicensed'];
-DQ.portals=[['Kamigawa: Neon Dynasty','A neon city glitters beyond the rift.'],['Fallout','A toxic wasteland stretches past faded signs.'],['Bloomburrow','Tiny villages wind through towering flowers.'],['Innistrad','A moonlit village waits beneath crooked spires.']];
-DQ.cardPools={
- Standard:{description:'A smaller modern-style pool with straightforward creatures and evergreen mechanics.',allowed:['Savannah Lions','Storm Crow','Goblin Piker','Llanowar Elves','Typhoid Rats','Runeclaw Bear']},
- Pauper:{description:'Commons-focused gameplay with efficient creatures, fewer bombs, and tighter resource decisions.',allowed:['Storm Crow','Goblin Piker','Llanowar Elves','Typhoid Rats','Runeclaw Bear']},
- Legacy:{description:'A broad, high-powered pool with old and new mechanics available together.',allowed:null},
- Vintage:{description:'The broadest experimental pool with the strongest test cards and combinations.',allowed:null}
-};
+function makeUnit(row,id,side){return{id,side,name:row[0],power:row[1],maxHp:row[2],damage:0,hp:row[2],mv:row[3],colors:[...row[4]],keywords:[...row[5]],alive:true,exiled:false,tapped:false,mana:0,xp:0,level:1,spells:[],abilities:[]}}

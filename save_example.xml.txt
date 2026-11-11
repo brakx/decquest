@@ -1,1 +1,1 @@
-<DekQuestSave version="0.15"><CardPool>Standard</CardPool><Mode>standard</Mode><Difficulty>Easy</Difficulty><Chapter>1</Chapter><Room>5</Room><Settings>{}</Settings><Heroes></Heroes></DekQuestSave>
+<DekQuestSave version="0.15.1"><CardPool>Standard</CardPool><Room>1</Room></DekQuestSave>

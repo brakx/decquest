@@ -1,0 +1,81 @@
+DEKQUEST APP PLAN
+Last updated for Alpha 0.15.1
+
+PROJECT GOAL
+Draft and evolve a four-hero party from Magic-style cards, fight through 20 floors, use portals and save rooms, and defeat an evil Planeswalker.
+
+STABLE OR COMPLETED
+- Browser-based deployment through GitHub/Cloudflare.
+- Mobile-responsive interface.
+- ASCII welcome screen.
+- Initiative and turn progression.
+- Universal Party/Enemy target selection.
+- Temporary allies from Reanimate-style effects.
+- Autosave foundation and XML save concept.
+- Difficulty and mana-value budget controls.
+- Standard, Pauper, Legacy, and Vintage pool-selection UI.
+- Keyword Test Draft.
+- Boss-only exile warning concept.
+
+ALPHA 0.15.1 CURRENT TEST FOCUS
+- Restore keyword behavior after Alpha 0.15 regressions.
+- Flying and Reach target legality.
+- Deathtouch as lethal after positive damage.
+- Double Strike as two separate damage events.
+- Lifelink healing per damage event.
+- Vigilance and Haste.
+- Hexproof and Protection target legality.
+- Indestructible tracks damage but survives lethal damage and Deathtouch.
+- Trample keeps an explicit combat context.
+- Trample spillover uses the original target group.
+- Trample excludes original, defeated, and exiled targets.
+- Trample automatically discards excess if no valid target remains.
+- Boss-only exile bypasses Indestructible.
+
+TEST CHECKLIST
+[ ] Flying cannot be attacked without Flying or Reach.
+[ ] Reach can attack Flying.
+[ ] Deathtouch defeats a non-Indestructible target after 1 damage.
+[ ] Deathtouch does not defeat Indestructible.
+[ ] Double Strike creates two logged damage events.
+[ ] Lifelink heals on each successful damage event.
+[ ] Vigilance attacker remains untapped.
+[ ] Haste adds +5 initiative.
+[ ] Protection prevents matching-color damage and targeting.
+[ ] Indestructible keeps marked damage and remains alive.
+[ ] Trample offers valid same-group spillover targets.
+[ ] Trample advances automatically when no spillover target exists.
+[ ] Deathtouch + Trample requires 1 damage on a normal first target.
+[ ] Trample context clears after assignment.
+[ ] Boss exile removes an Indestructible hero for the room.
+
+NEXT IMPLEMENTATION
+Alpha 0.15.2 or 0.15.1 patch:
+- Reintegrate the verified keyword engine into the complete 0.15 adventure loop.
+- Restore full spells, abilities, Reanimate, temporary allies, leveling, portals, save room, and boss progression without modifying keyword resolution.
+
+Alpha 0.16:
+- Begin Scryfall data integration.
+- Cache a curated card dataset rather than querying every combat action.
+- Map Scryfall fields into DekQuest card records.
+- Filter real cards by Standard, Pauper, Legacy, and Vintage legality.
+- Keep invented fallback cards when network data is unavailable.
+
+FUTURE TESTING
+- Enemy AI target selection.
+- Balance encounter budgets by room and party growth.
+- Boss ability frequency and counterplay.
+- XML schema migration between versions.
+- Full tutorial with required interactive actions.
+- 20-floor progression and final Planeswalker encounter.
+
+BALANCE DEFAULTS
+Base budget = total permanent hero levels.
+Optional room modifier = current room number.
+Easy bonus = 0.
+Normal bonus = random 1 to 2.
+Hard bonus = random 2 to 3.
+These values remain editable in Developer / Balance Testing.
+
+VERSION RULE
+Every build must update the browser title, visible title, debug version, README, save schema, autosave key, and asset cache keys.

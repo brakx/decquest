@@ -1,30 +1,24 @@
 DEKQUEST APP PLAN
-Updated for Alpha 0.15.2
+Baseline: Alpha 0.15
+Patch: Keyword Fix
 
-CURRENT BASELINE
-Alpha 0.15 remains the product baseline. Alpha 0.15.2 keeps the normal card-pool, draft, autosave, XML-import, combat, and boss-test flow while changing only keyword resolution and Trample state handling.
-
-ALPHA 0.15.2 TESTS
-[ ] Flying requires Flying or Reach for attacks.
-[ ] Reach can attack Flying.
-[ ] Deathtouch is lethal after positive damage.
-[ ] Deathtouch does not destroy Indestructible.
-[ ] Double Strike creates two damage events.
-[ ] Lifelink heals for each damage event.
-[ ] Vigilance does not tap when attacking.
-[ ] Haste adds +5 initiative.
-[ ] Protection blocks matching-color targeting and damage.
-[ ] Indestructible keeps marked damage but remains alive.
-[ ] Trample stores original target group and remaining damage.
-[ ] Trample spillover excludes original, dead, and exiled targets.
-[ ] Trample target list rebuilds if combat state changes.
-[ ] Excess Trample is discarded and turn advances when no valid target remains.
-[ ] Deathtouch plus Trample assigns 1 lethal damage to a normal target.
-[ ] Boss exile bypasses Indestructible.
+SCOPE OF THIS PATCH
+- Keep all Alpha 0.15 menus and gameplay flow.
+- Fix only keyword resolution and the existing Trample assignment panel.
+- Flying and Reach attack legality.
+- Protection filtering and damage prevention.
+- Hexproof support for future hostile spells and abilities.
+- Double Strike as two separate damage events.
+- Deathtouch per positive-damage event.
+- Lifelink per damage event.
+- Vigilance and Haste retained.
+- Indestructible survives lethal damage and Deathtouch.
+- Trample stores original target group and remaining damage.
+- Trample excludes original, defeated, and exiled targets.
+- Trample rebuilds targets when combat state changes.
+- Trample discards excess and advances if no target remains.
 
 NEXT
-- Once these tests pass, merge this exact combat.js into the full Alpha 0.15 adventure build without changing menus or progression.
-- Alpha 0.16: begin cached Scryfall card-data integration and format legality filters.
-
-VERSION RULE
-Update browser title, visible title, debug version, README, save schema, autosave key, and asset cache keys for every build.
+- Test this patch through the normal Alpha 0.15 app.
+- Record any remaining keyword defect by keyword and exact combat sequence.
+- Do not begin Scryfall integration until this patch passes.

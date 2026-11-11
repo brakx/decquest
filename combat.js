@@ -1,23 +1,98 @@
 class Combat{
- constructor(party,enemies,draw){this.party=party;this.enemies=enemies;this.draw=draw;this.order=[];this.turn=0;this.round=1;this.state='START';this.pending=null;this.log=[];this.trample=0;this.trampleAttacker=null;this.debug={};this.exileWarning=null}
- all(){return[...this.party,...this.enemies]} live(side){return(side==='party'?this.party:this.enemies).filter(x=>x.alive&&!x.exiled)} unit(id){return this.all().find(x=>x.id===id)} current(){return this.unit(this.order[this.turn]?.id)} say(x){this.log.unshift(x)} show(){this.draw()}
- start(){this.party.forEach(x=>{x.hp=x.maxHp;x.alive=true;x.tapped=false;x.mana=0});this.order=this.all().map((x,n)=>({id:x.id,roll:1+Math.floor(Math.random()*10)+(x.keywords.includes('Haste')?5:0),n})).sort((a,b)=>b.roll-a.roll||a.n-b.n);this.begin()}
- begin(){if(this.end())return;if(this.turn>=this.order.length){this.turn=0;this.round++}const u=this.current();if(!u||!u.alive){this.next();return}if(u.side==='hero'){u.tapped=false;u.mana++;this.state='HERO';this.say(`${u.name} gains 1 mana.`);this.show()}else{this.state='ENEMY';this.show();setTimeout(()=>this.enemy(u),250)}}next(){this.turn++;this.begin()}
- canAttack(a,t){return !t.keywords.includes('Flying')||a.keywords.includes('Flying')||a.keywords.includes('Reach')}
- chooseAttack(){this.pending={kind:'attack',actor:this.current()};this.state='GROUP';this.show()}chooseGroup(g){this.pending.group=g;this.state='TARGET';this.show()}cancel(){this.pending=null;this.state='HERO';this.show()}targets(){return this.live(this.pending.group).filter(t=>this.pending.kind!=='attack'||this.canAttack(this.pending.actor,t))}
- target(id){const a=this.pending.actor,t=this.unit(id);if(!this.canAttack(a,t)){this.say(`${a.name} cannot attack Flying ${t.name}.`);this.cancel();return}const lethalNeed=a.keywords.includes('Deathtouch')?1:t.hp,attempt=a.power*(a.keywords.includes('Double Strike')?2:1);this.debug={attacker:a.keywords.join(', ')||'none',target:t.keywords.join(', ')||'none',attempt,prevented:0,dealt:0,deathtouch:false,trample:0,lifelink:0};let damage=attempt;const indestructible=t.keywords.includes('Indestructible');if(indestructible)this.say(`${t.name} is Indestructible; damage is marked but lethal damage will not destroy it.`);const protection=t.keywords.find(k=>k.startsWith('Protection from '));if(protection&&a.colors.includes(protection.replace('Protection from ',''))){this.debug.prevented=damage;damage=0;this.say(`${t.name}'s ${protection} prevents the damage.`)}this.debug.dealt=damage;t.hp=Math.max(0,t.hp-damage);if(a.keywords.includes('Lifelink')&&damage>0){const heal=Math.min(damage,a.maxHp-a.hp);a.hp+=heal;this.debug.lifelink=heal;this.say(`${a.name} heals ${heal}.`)}if(damage>0&&a.keywords.includes('Deathtouch')&&!t.keywords.includes('Indestructible')){t.hp=0;this.debug.deathtouch=true}if(t.hp<=0&&!indestructible){t.alive=false;this.say(`${t.name} is defeated.`);if(a.side==='hero')a.xp=(a.xp||0)+(t.mv||0)}else if(t.hp<=0&&indestructible){t.hp=1;this.say(`${t.name} survives lethal damage because it is Indestructible.`)}const required=t.keywords.includes('Indestructible')?attempt:Math.min(attempt,lethalNeed);if(a.keywords.includes('Trample')&&t.hp<=0){this.trample=Math.max(0,attempt-required);this.debug.trample=this.trample}if(!a.keywords.includes('Vigilance'))a.tapped=true;this.say(`${a.name} deals ${damage} to ${t.name}.`);this.pending=null;if(this.trample>0&&this.live('enemy').length){this.trampleAttacker=a;this.state='TRAMPLE';this.show()}else if(!this.end())this.next()}
- trampleTarget(id){const t=this.unit(id),a=this.trampleAttacker,d=this.trample;this.trample=0;this.trampleAttacker=null;t.hp=Math.max(0,t.hp-d);this.say(`${a.name} assigns ${d} trample damage to ${t.name}.`);if(d>0&&a.keywords.includes('Deathtouch')&&!t.keywords.includes('Indestructible'))t.hp=0;if(t.hp<=0&&!indestructible){t.alive=false;this.say(`${t.name} is defeated.`);if(a.side==='hero')a.xp=(a.xp||0)+(t.mv||0)}else if(t.hp<=0&&indestructible){t.hp=1;this.say(`${t.name} survives lethal damage because it is Indestructible.`)}if(!this.end())this.next()}
- pass(){this.next()}enemy(a){
- if(a.bossExile&&this.round%3===0&&!a.exileUsed){
-  const targets=this.live('party');
-  const t=targets[Math.floor(Math.random()*targets.length)];
-  a.exileUsed=true;this.exileWarning={source:a,target:t};this.state='EXILE_WARNING';
-  this.say(`${a.name} prepares Void Judgment to exile ${t.name}.`);this.show();return;
+ constructor(party,enemies,draw){this.party=party;this.enemies=enemies;this.draw=draw;this.order=[];this.turn=0;this.round=1;this.state='START';this.pending=null;this.log=[];this.debug={};this.exileWarning=null;this.trampleContext=null}
+ all(){return[...this.party,...this.enemies]}
+ live(side){const list=side==='party'?this.party:this.enemies;return list.filter(x=>x.alive&&!x.exiled)}
+ unit(id){return this.all().find(x=>x.id===id)}
+ current(){return this.unit(this.order[this.turn]?.id)}
+ say(x){this.log.unshift(x)}
+ show(){this.draw()}
+ start(){this.party.forEach(x=>{x.hp=x.maxHp;x.alive=true;x.tapped=false;x.mana=0;x.exiled=false});this.order=this.all().map((x,n)=>({id:x.id,roll:1+Math.floor(Math.random()*10)+(x.keywords.includes('Haste')?5:0),n})).sort((a,b)=>b.roll-a.roll||a.n-b.n);this.begin()}
+ begin(){if(this.end())return;if(this.turn>=this.order.length){this.turn=0;this.round++}const u=this.current();if(!u||!u.alive||u.exiled){this.next();return}if(u.side==='hero'){u.tapped=false;u.mana++;this.state='HERO';this.say(`${u.name} gains 1 mana.`);this.show()}else{this.state='ENEMY';this.show();setTimeout(()=>this.enemy(u),250)}}
+ next(){this.turn++;this.begin()}
+ has(u,k){return(u.keywords||[]).includes(k)}
+ canAttack(a,t){return !this.has(t,'Flying')||this.has(a,'Flying')||this.has(a,'Reach')}
+ protectionKeyword(t){return(t.keywords||[]).find(k=>k.startsWith('Protection from '))}
+ protectedFrom(a,t){const k=this.protectionKeyword(t);return Boolean(k&&(a.colors||[]).includes(k.replace('Protection from ','')))}
+ targetLegal(a,t,kind='attack'){if(!t||!t.alive||t.exiled)return false;if(kind==='attack'&&!this.canAttack(a,t))return false;if(this.protectedFrom(a,t))return false;if(kind!=='attack'&&a.side!==t.side&&this.has(t,'Hexproof'))return false;return true}
+ chooseAttack(){this.pending={kind:'attack',actor:this.current()};this.state='GROUP';this.show()}
+ chooseGroup(g){this.pending.group=g;this.state='TARGET';this.show()}
+ cancel(){this.pending=null;this.state='HERO';this.show()}
+ targets(){if(!this.pending)return[];return this.live(this.pending.group).filter(t=>this.targetLegal(this.pending.actor,t,this.pending.kind))}
+ target(id){const p=this.pending,a=p?.actor,t=this.unit(id),group=p?.group;if(!a||!t||!this.targets().some(x=>x.id===id)){this.say('That target is not legal.');this.cancel();return}this.pending=null;this.resolveAttack(a,t,group)}
+ resolveAttack(a,t,group){
+  this.debug={attacker:(a.keywords||[]).join(', ')||'none',target:(t.keywords||[]).join(', ')||'none',attempt:0,prevented:0,dealt:0,deathtouch:false,trample:0,lifelink:0,events:[]};
+  if(!this.has(a,'Vigilance'))a.tapped=true;
+  const strikes=this.has(a,'Double Strike')?2:1;
+  for(let strike=1;strike<=strikes;strike++){
+   if(!t.alive||t.exiled)break;
+   this.resolveDamageEvent(a,t,a.power,`Strike ${strike}`,group,true);
+  }
+  if(this.trampleContext?.remaining>0){
+   const valid=this.validTrampleTargets();
+   this.trampleContext.validTargetIds=valid.map(x=>x.id);
+   this.debug.trample=this.trampleContext.remaining;
+   if(valid.length){this.state='TRAMPLE';this.show();return}
+   this.say(`No valid spillover targets. ${this.trampleContext.remaining} trample damage is discarded.`);
+   this.trampleContext=null;
+  }
+  if(!this.end())this.next();
  }
- let targets=this.live('party').filter(t=>this.canAttack(a,t));if(!targets.length){this.say(`${a.name} has no legal attack target.`);this.next();return}
- const t=targets[Math.floor(Math.random()*targets.length)];let d=a.power;const indestructible=t.keywords.includes('Indestructible');const p=t.keywords.find(k=>k.startsWith('Protection from '));if(p&&a.colors.includes(p.replace('Protection from ','')))d=0;t.hp=Math.max(0,t.hp-d);if(d>0&&a.keywords.includes('Deathtouch')&&!indestructible)t.hp=0;this.say(`${a.name} attacks ${t.name} for ${d}.`);if(t.hp<=0&&!indestructible)t.alive=false;else if(t.hp<=0&&indestructible){t.hp=1;this.say(`${t.name} survives because it is Indestructible.`)}if(!this.end())this.next()
+ lethalRequired(a,t){const remaining=Math.max(0,t.hp);if(this.has(a,'Deathtouch')&&!this.has(t,'Indestructible'))return Math.min(1,remaining);return remaining}
+ resolveDamageEvent(a,t,amount,label,group,allowTrample){
+  const required=this.lethalRequired(a,t),trample=allowTrample&&this.has(a,'Trample');
+  const assigned=trample?Math.min(amount,required):amount,excess=trample?Math.max(0,amount-assigned):0;
+  let damage=assigned,prevented=0;
+  if(this.protectedFrom(a,t)){prevented=damage;damage=0}
+  const indestructible=this.has(t,'Indestructible');
+  t.hp=Math.max(0,t.hp-damage);
+  const deathtouch=damage>0&&this.has(a,'Deathtouch')&&!indestructible;
+  if((t.hp<=0||deathtouch)&&!indestructible)t.alive=false;
+  const heal=this.has(a,'Lifelink')&&damage>0?Math.min(damage,a.maxHp-a.hp):0;
+  if(heal>0)a.hp+=heal;
+  this.debug.attempt+=amount;this.debug.prevented+=prevented;this.debug.dealt+=damage;this.debug.deathtouch=this.debug.deathtouch||deathtouch;this.debug.lifelink+=heal;
+  this.debug.events.push({label,attempted:amount,required,assigned,dealt:damage,prevented,deathtouch,lifelink:heal,excess});
+  this.say(`${a.name} ${label.toLowerCase()} deals ${damage} to ${t.name}.`);
+  if(deathtouch)this.say('Deathtouch is lethal.');
+  if(indestructible&&(t.hp<=0||this.has(a,'Deathtouch')))this.say(`${t.name} survives because it is Indestructible.`);
+  if(!t.alive){this.say(`${t.name} is defeated.`);if(a.side==='hero')a.xp=(a.xp||0)+(t.mv||0)}
+  if(excess>0){
+   if(!this.trampleContext)this.trampleContext={attackerId:a.id,originalTargetId:t.id,targetGroup:group,remaining:0,validTargetIds:[]};
+   this.trampleContext.remaining+=excess;
+  }
  }
- resolveBossExile(counter=false){const w=this.exileWarning;if(!w)return;if(counter){this.say(`Void Judgment is countered.`)}else{w.target.exiled=true;w.target.alive=false;this.say(`${w.target.name} is exiled for the rest of the room. Indestructible does not stop exile.`)}this.exileWarning=null;if(!this.end())this.next()}
-
+ validTrampleTargets(){const c=this.trampleContext;if(!c)return[];return this.live(c.targetGroup).filter(x=>x.id!==c.originalTargetId)}
+ trampleTarget(id){
+  const c=this.trampleContext;if(!c)return;
+  const valid=this.validTrampleTargets();c.validTargetIds=valid.map(x=>x.id);
+  if(!c.validTargetIds.includes(id)){
+   this.say('Trample targets changed. The target list was rebuilt.');
+   if(!valid.length){this.say(`No valid spillover targets. ${c.remaining} trample damage is discarded.`);this.trampleContext=null;if(!this.end())this.next()}else this.show();
+   return;
+  }
+  const a=this.unit(c.attackerId),t=this.unit(id),damage=c.remaining,group=c.targetGroup;
+  this.trampleContext=null;
+  this.resolveDamageEvent(a,t,damage,'trample spillover',group,false);
+  this.say(`${a.name} assigns ${damage} trample damage to ${t.name}.`);
+  if(!this.end())this.next();
+ }
+ pass(){this.next()}
+ enemy(a){
+  if(a.bossExile&&this.round%3===0&&!a.exileUsed){const targets=this.live('party');const t=targets[Math.floor(Math.random()*targets.length)];a.exileUsed=true;this.exileWarning={source:a,target:t};this.state='EXILE_WARNING';this.say(`${a.name} prepares Void Judgment to exile ${t.name}.`);this.show();return}
+  const targets=this.live('party').filter(t=>this.targetLegal(a,t,'attack'));
+  if(!targets.length){this.say(`${a.name} has no legal attack target.`);this.next();return}
+  const t=targets[Math.floor(Math.random()*targets.length)],strikes=this.has(a,'Double Strike')?2:1;
+  for(let strike=1;strike<=strikes;strike++){
+   if(!t.alive||t.exiled)break;
+   const damage=a.power,indestructible=this.has(t,'Indestructible');
+   t.hp=Math.max(0,t.hp-damage);
+   const deathtouch=damage>0&&this.has(a,'Deathtouch')&&!indestructible;
+   if((t.hp<=0||deathtouch)&&!indestructible)t.alive=false;
+   const heal=this.has(a,'Lifelink')?Math.min(damage,a.maxHp-a.hp):0;if(heal>0)a.hp+=heal;
+   this.say(`${a.name} strike ${strike} deals ${damage} to ${t.name}.`);
+   if(indestructible&&(t.hp<=0||this.has(a,'Deathtouch')))this.say(`${t.name} survives because it is Indestructible.`);
+  }
+  if(!this.end())this.next();
+ }
+ resolveBossExile(counter=false){const w=this.exileWarning;if(!w)return;if(counter)this.say('Void Judgment is countered.');else{w.target.exiled=true;w.target.alive=false;this.say(`${w.target.name} is exiled for the rest of the room. Indestructible does not stop exile.`)}this.exileWarning=null;if(!this.end())this.next()}
  end(){if(!this.live('enemy').length){this.state='WIN';this.show();return true}if(!this.live('party').length){this.state='LOSE';this.show();return true}return false}
 }
